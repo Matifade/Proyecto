@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piedra, Papel o Tijera - Raspberry Pi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='juego.css') }}">
+</head>
+<body>
+
+    <h1>Piedra, Papel o Tijera vs Máquina</h1>
+    
+    <div class="game-container">
+        <div>
+            <h3>Tu Cámara</h3>
+            <img src="{{ url_for('video_feed') }}" alt="Video en vivo">
+        </div>
+
+        <div class="panel">
+            <h3>Panel de Juego</h3>
+            <button onclick="jugar()">¡JUGAR!</button>
+            <p>Tú elegiste: <span id="user-choice">-</span></p>
+            <p>La máquina eligió: <span id="machine-choice">-</span></p>
+            <div id="resultado"></div>
+        </div>
+    </div>
+
+    <script>
+        function jugar() {
+            fetch('/play', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('user-choice').innerText = data.usuario;
+                    document.getElementById('machine-choice').innerText = data.maquina;
+                    document.getElementById('resultado').innerText = data.resultado;
+                });
+        }
+    </script>
+</body>
+</html>
